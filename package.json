@@ -1,0 +1,21 @@
+{
+  "name": "server-bun",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "NODE_ENV=production bun src/index.ts",
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "elysia": "^1.0.14",
+    "short-uuid": "^4.2.2"
+  }
+}
