@@ -6,12 +6,49 @@ import { Pool } from "pg";
 import * as schema from './schema';
 
 
-const pool = new Pool({
-  connectionString: Bun.env.DATABASE_URL,
+
+
+const DB_URL = process.env.DATABASE_URL;
+
+if (!DB_URL) {
+  throw new Error("DATABASE_URL is required");
+}
+
+export const db = drizzle(DB_URL, {
+  schema,
 });
 
 
-export const db = drizzle(pool, {schema });
+
+
+
+// URI de conexión a PostgreSQL
+const DATABASE_URL = "postgresql://postgres:HJLjxlUbmHZLJClLXrvaKxQthUXlDlBh@viaduct.proxy.rlwy.net:19398/railway?schema=public";
+
+export const pool = new Pool({
+  connectionString: DATABASE_URL,
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const pool = new Pool({
+//   connectionString: Bun.env.DATABASE_URL,
+// });
+
+
+// export const db = drizzle(pool, {schema });
 
 
 

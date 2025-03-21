@@ -27,8 +27,7 @@ import { boolean, char, numeric, pgTable, serial, text, timestamp, uuid, varchar
 //   email: varchar('email', { length: 256 }),
 // });
 
-export const respuesta = pgTable('respuesta', {
-  id: serial('id').primaryKey(),
-  name: varchar('name', { length: 256 }),
-  email: varchar('email', { length: 256 }),
+export const respuestas = pgTable('respuestas', {
+  id_respuesta_i: serial('id_respuesta_i').primaryKey(),
+  respuesta_t: varchar('respuesta_t', { length: 256 }),
 });

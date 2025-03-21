@@ -1,8 +1,9 @@
 import { Context } from 'hono'
-import { usuario } from '../../drizzle/schema';
-import { db } from '../../drizzle/db';
+import { respuestas } from '../../drizzle/schema';
+// import { usuario } from '../../drizzle/schema';
+import { db, pool } from '../../drizzle/db';
 import { eq } from 'drizzle-orm';
-import User from './respuesta.type.valid';
+// import User from './respuesta.type.valid';
 import { password } from 'bun';
 
 
@@ -16,16 +17,33 @@ export const allRespuesta = async (c: Context) => {
 
     const result = await db.select(
       {
-        dni: usuario.dni,
-        name: usuario.name,
-        email: usuario.email,
-        descripcion: usuario.descripcion,
+        id_respuesta_i: respuestas.id_respuesta_i,
+        respuesta: respuestas.respuesta_t,
       }
-    ).from(usuario);
+    ).from(respuestas);
 
     console.log(result);
 
     return c.json({ msj: "success", usuario: result })
+
+  } catch (err) {
+    console.error(`Error: ${err}`);
+    return c.json({ msj: "Error server", err }, 400)
+
+  }
+}
+
+//? GET ALL RESPUESTAS
+//? **********************************************************************/
+export const allRespuestax = async (c: Context) => {
+
+  try {
+
+    const result = await pool.query('SELECT id_respuesta_i, respuesta_t FROM respuestas');
+
+    console.log(result);
+
+    return c.json({ msj: "success", usuario: result.rows })
 
   } catch (err) {
     console.error(`Error: ${err}`);

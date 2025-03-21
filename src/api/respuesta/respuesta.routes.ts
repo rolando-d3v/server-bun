@@ -7,6 +7,7 @@ import { schemaUser } from './respuesta.type.valid'
 export const respuestaRoutes = new Hono()
 
 respuestaRoutes.get('/all', Ctrl.allRespuesta)
+respuestaRoutes.get('/allx', Ctrl.allRespuestax)
 
 
 
