@@ -1,4 +1,9 @@
 import { Hono } from 'hono'
+import { userRoutes } from './api/personal/user.routes';
+import { respuestaRoutes } from './api/respuesta/respuesta.routes';
+import { cors } from 'hono/cors';
+import { logger } from 'hono/logger';
+import { prettyJSON } from 'hono/pretty-json';
 
 const app = new Hono()
 
@@ -25,6 +30,20 @@ app.get('/', (c) => {
 
 
 
+// middleware
+app.use('*', cors())
+app.use(logger())
+app.use(prettyJSON())
+app.notFound((c) => {
+  return c.text('Custom 404 Message', 404)
+})
+
+
+
+
+// routes
 app.get("/users", (c) => c.text("¡Hola desde Hono! 🚀"));
+app.route('/user', userRoutes)
+app.route('/respuesta', respuestaRoutes)
 
 export default app
