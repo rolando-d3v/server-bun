@@ -1,22 +1,22 @@
 
-import { NodePgDatabase, drizzle } from "drizzle-orm/node-postgres";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
+// import { NodePgDatabase, drizzle } from "drizzle-orm/node-postgres";
+// import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
 
-import * as schema from './schema';
+// import * as schema from './schema';
 
 
 
 
-const DB_URL = Bun.env.DATABASE_URL  || "postgresql://postgres:" ;
+// const DB_URL = Bun.env.DATABASE_URL  || "postgresql://postgres:" ;
 
-if (!DB_URL) {
-  throw new Error("DATABASE_URL is required");
-}
+// if (!DB_URL) {
+//   throw new Error("DATABASE_URL is required");
+// }
 
-export const db = drizzle(DB_URL, {
-  schema,
-});
+// export const db = drizzle(DB_URL, {
+//   schema,
+// });
 
 
 

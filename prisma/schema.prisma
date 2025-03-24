@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model curso {
+  id_curso_i       Int                @id @default(autoincrement())
+  desc_corta_v     String             @db.VarChar(200)
+  desc_larga_v     String             @db.VarChar(200)
+  estado_b         Boolean?           @default(true)
+  fecha_create_d   DateTime?          @default(now()) @db.Timestamp(6)
+  libros           String?            @db.VarChar(255)
+  cursos_secciones cursos_secciones[]
+  personal_curso   personal_curso[]
+}
+
+model cursos_secciones {
+  id_cursos_secciones_i Int       @id @default(autoincrement())
+  curso_id_i            Int
+  seccion_id_i          Int
+  estado_b              Boolean?  @default(true)
+  fecha_create_d        DateTime? @default(now()) @db.Timestamp(6)
+  curso                 curso     @relation(fields: [curso_id_i], references: [id_curso_i], onDelete: NoAction, onUpdate: NoAction)
+  secciones             secciones @relation(fields: [seccion_id_i], references: [id_secciones_i], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model login_user {
+  id_login_i     Int       @id @default(autoincrement())
+  user_uuid      String    @db.Uuid
+  fecha_create_d DateTime? @default(now()) @db.Timestamp(6)
+  personal       personal  @relation(fields: [user_uuid], references: [uuid_user], onDelete: Cascade)
+}
+
+model opciones {
+  id_opciones_i Int      @id @default(autoincrement())
+  desc_corta_v  String   @db.VarChar(191)
+  desc_larga_v  String   @db.VarChar(191)
+  role_id_i     Int
+  url_opcion    String?  @db.VarChar(191)
+  icon          String?  @db.VarChar(191)
+  estado_b      Boolean? @default(true)
+  role          role     @relation(fields: [role_id_i], references: [id_role_i], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model personal {
+  id_dni_c       String?         @db.Char(8)
+  uuid_user      String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  ap_paterno_v   String?         @db.VarChar(191)
+  ap_materno_v   String?         @db.VarChar(191)
+  nombre_v       String?         @db.VarChar(191)
+  password_v     String?         @db.VarChar(191)
+  secret_pass_v  String?         @db.VarChar(191)
+  fecha_nac_d    DateTime?       @db.Date
+  estado_b       Boolean?        @default(true)
+  foto_v         String?         @default("user.png") @db.VarChar(255)
+  domic_i        String?         @db.VarChar(191)
+  celular_v      String?         @db.VarChar(19)
+  fecha_create_d DateTime?       @default(now()) @db.Timestamp(6)
+  email          String?         @unique @db.VarChar(255)
+  login_user     login_user[]
+  personal_role  personal_role[]
+}
+
+model personal_curso {
+  id_personal_curso_i Int       @id @default(autoincrement())
+  personal_id_c       String    @db.Char(8)
+  curso_id_i          Int
+  estado_b            Boolean?  @default(true)
+  fecha_create_d      DateTime? @default(now()) @db.Timestamp(6)
+  curso               curso     @relation(fields: [curso_id_i], references: [id_curso_i], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model personal_role {
+  id_personal_role_i Int       @id @default(autoincrement())
+  role_id_i          Int?
+  estado_b           Boolean?  @default(true)
+  fecha_create_d     DateTime? @default(now()) @db.Timestamp(6)
+  user_uuid          String?   @db.Uuid
+  role               role?     @relation(fields: [role_id_i], references: [id_role_i], onDelete: NoAction, onUpdate: NoAction)
+  personal           personal? @relation(fields: [user_uuid], references: [uuid_user], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model preguntas {
+  id_pregunta_i  Int          @id @default(autoincrement())
+  nro_pregunta_i Int
+  pregunta_t     String
+  sub_pregunta_v String?
+  url_img        String?      @db.VarChar(191)
+  tema_id_i      Int
+  estado_b       Boolean?     @default(true)
+  fecha_reg      DateTime?    @default(now()) @db.Timestamp(6)
+  preg_marcado   Int?         @default(0)
+  tema           tema         @relation(fields: [tema_id_i], references: [id_tema_i], onDelete: NoAction, onUpdate: NoAction)
+  respuestas     respuestas[]
+}
+
+model respuestas {
+  id_respuesta_i  Int       @id @default(autoincrement())
+  respuesta_t     String
+  url_img         String?   @db.VarChar(200)
+  resp_correcta_i Int?
+  pregunta_id_i   Int
+  estado_b        Boolean?  @default(true)
+  preguntas       preguntas @relation(fields: [pregunta_id_i], references: [id_pregunta_i], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model role {
+  id_role_i     Int             @id @default(autoincrement())
+  desc_corta_v  String          @db.VarChar(191)
+  desc_larga_v  String          @db.VarChar(191)
+  estado_b      Boolean?        @default(true)
+  opciones      opciones[]
+  personal_role personal_role[]
+}
+
+model secciones {
+  id_secciones_i   Int                @id @default(autoincrement())
+  desc_corta_t     String             @db.VarChar(191)
+  desc_larga       String?            @db.VarChar(191)
+  estado_b         Boolean?           @default(true)
+  cursos_secciones cursos_secciones[]
+  tema             tema[]
+}
+
+model tema {
+  id_tema_i      Int         @id @default(autoincrement())
+  desc_corta_t   String?     @db.VarChar(255)
+  desc_larga_t   String?     @db.VarChar(255)
+  estado_b       Boolean?    @default(true)
+  secciones_id_i Int?
+  preguntas      preguntas[]
+  secciones      secciones?  @relation(fields: [secciones_id_i], references: [id_secciones_i], onDelete: NoAction, onUpdate: NoAction)
+}

@@ -4,7 +4,7 @@ import { respuestaRoutes } from './api/respuesta/respuesta.routes';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
-import { pool } from './drizzle/db';
+import { pool } from './config/db';
 
 const app = new Hono()
 

@@ -1,10 +1,8 @@
 import { Context } from 'hono'
-import { respuestas } from '../../drizzle/schema';
 // import { usuario } from '../../drizzle/schema';
-import { db, pool } from '../../drizzle/db';
-import { eq } from 'drizzle-orm';
 // import User from './respuesta.type.valid';
 import { password } from 'bun';
+import { pool } from '../../config/db';
 
 
 
@@ -15,16 +13,16 @@ export const allRespuesta = async (c: Context) => {
 
   try {
 
-    const result = await db.select(
-      {
-        id_respuesta_i: respuestas.id_respuesta_i,
-        respuesta: respuestas.respuesta_t,
-      }
-    ).from(respuestas);
+    // const result = await db.select(
+    //   {
+    //     id_respuesta_i: respuestas.id_respuesta_i,
+    //     respuesta: respuestas.respuesta_t,
+    //   }
+    // ).from(respuestas);
 
-    console.log(result);
+    // console.log(result);
 
-    return c.json({ msj: "success", usuario: result })
+    return c.json({ msj: "success" })
 
   } catch (err) {
     console.error(`Error: ${err}`);
